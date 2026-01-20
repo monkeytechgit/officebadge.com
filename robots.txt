@@ -1,0 +1,6 @@
+# robots.txt for OfficeBadge
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://www.officebadge.com/sitemap.xml

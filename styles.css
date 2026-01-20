@@ -1,0 +1,667 @@
+
+/*
+  OfficeBadge — Industrial, clean layout (Home Depot-inspired)
+  - No shadows
+  - No rounded corners
+  - No gradients
+  - Simple grid cards with clear product info
+*/
+:root{
+  /* Brand palette (from logo) */
+  --brand:#094f8e;
+  --brand-ink:#083a67;
+  --accent:#ff6600;
+  --whatsapp:#25D366;
+  --whatsapp-ink:#1DA851;
+  --danger:#b91c1c;
+  --ink:#0b1220;
+  --muted:#4b5563;
+  --muted-2:#6b7280;
+  --bg:#ffffff;
+  --bg-alt:#f9fafb;
+  --line:#d1d5db;
+
+  --container:1180px;
+  --gutter:20px;
+
+  --text-sm:13px;
+  --text-md:14px;
+  --text-lg:16px;
+  --text-xl:20px;
+  --text-2xl:28px;
+
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+	margin:0;
+	font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
+	color:var(--ink);
+	background:var(--bg);
+	line-height:1.55;
+}
+img{max-width:100%;height:auto;display:block}
+a{color:inherit}
+
+.container{max-width:var(--container);margin:0 auto;padding:0 var(--gutter)}
+
+.skip-link{
+	position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;
+}
+.skip-link:focus{
+	left:16px;top:16px;width:auto;height:auto;z-index:1000;
+	background:var(--bg);padding:10px 12px;border:2px solid var(--line);
+}
+
+.header{
+	position:sticky;top:0;z-index:50;
+	background:var(--bg);
+	border-bottom:2px solid var(--line);
+}
+.header__row{
+	display:flex;align-items:center;justify-content:space-between;
+	gap:16px;min-height:72px;
+}
+
+.topbar{background:var(--brand);color:#fff}
+.topbar__row{display:flex;align-items:center;justify-content:space-between;min-height:34px;font-size:12px;letter-spacing:.02em}
+.topbar__row a{color:#fff;text-decoration:underline}
+
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.brand__logo{width:190px;max-width:42vw}
+
+.nav-toggle{
+  background:var(--bg);
+  border:2px solid var(--line);
+  width:46px;
+  height:46px;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  padding:0;
+}
+.nav-toggle:hover{border-color:var(--ink)}
+.nav-toggle svg{width:22px;height:22px;display:block}
+
+.nav{display:flex;align-items:center;gap:14px}
+.nav > a, .nav__item > a{
+	text-decoration:none;
+	color:var(--ink);
+	font-weight:800;
+	font-size:14px;
+	padding:10px 10px;
+	text-transform:uppercase;
+	letter-spacing:.06em;
+	cursor:pointer;
+	display:flex;
+	align-items:center;
+	gap:4px;
+}
+.nav > a:hover, .nav__item > a:hover{text-decoration:underline}
+.nav__arrow{transition:transform 0.2s ease}
+.nav__dropdown:hover .nav__arrow{transform:rotate(180deg)}
+.nav__dropdown:focus-within .nav__arrow{transform:rotate(180deg)}
+.nav__item{position:relative}
+.nav__menu{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transform:translateY(4px);
+  transition:opacity .15s ease, transform .15s ease, visibility 0s linear .15s;
+	position:absolute;
+  top:100%;
+	left:0;
+	background:#ffffff;
+	border:1px solid var(--line);
+	min-width:200px;
+	z-index:100;
+  margin-top:0;
+}
+.nav__menu::before{
+  content:"";
+  position:absolute;
+  top:-10px;
+  left:0;
+  right:0;
+  height:10px;
+}
+.nav__dropdown:hover .nav__menu,
+.nav__dropdown:focus-within .nav__menu{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+  transform:translateY(0);
+  transition:opacity .15s ease, transform .15s ease, visibility 0s;
+}
+.nav__menu a{
+	display:block;
+	padding:12px 16px;
+	text-transform:none;
+	font-weight:600;
+	font-size:13px;
+	border-bottom:1px solid var(--line);
+	letter-spacing:0;
+}
+.nav__menu a:last-child{border-bottom:none}
+.nav__menu a:hover{background:var(--bg-alt);color:var(--brand);text-decoration:none}
+
+.header__tools{display:flex;align-items:center;gap:12px}
+.search{
+	display:flex;align-items:center;gap:8px;
+	background:var(--bg);
+	border:2px solid var(--line);
+	padding:8px 12px;
+	min-width:260px;
+}
+.search input{
+	width:100%;border:0;outline:none;background:transparent;
+	font-size:14px;color:var(--ink);
+}
+
+.btn{
+  display:inline-block;
+  padding:12px 16px;
+  border:0;
+  font-weight:700;
+  text-decoration:none;
+  cursor:pointer;
+  text-align:center;
+  font-size:var(--text-md);
+  text-transform:uppercase;
+  letter-spacing:.04em;
+}
+.btn--primary{background:var(--accent);color:#fff}
+.btn--primary:hover{background:#e55a00}
+.btn--secondary{
+  background:var(--bg);
+  border:2px solid var(--line);
+  color:var(--ink);
+}
+.btn--secondary:hover{border-color:var(--ink)}
+.hero{
+  background:var(--bg-alt) url('img/hero.jpg') center/cover no-repeat;
+  border-bottom:1px solid var(--line);
+  padding:64px 0;
+  position:relative;
+}
+.hero::before{
+  content:'';
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background:rgba(255,255,255,0.92);
+}
+.hero__row{display:flex;gap:48px;align-items:center;position:relative;z-index:1}
+.hero__content{flex:1}
+.hero__product{flex:0 0 320px;display:flex;flex-direction:column;gap:16px;border:1px solid var(--line);background:#ffffff;padding:16px}
+.hero__badge{font-size:11px;font-weight:600;text-transform:uppercase;color:var(--accent);letter-spacing:0.5px}
+.hero__product img{width:100%;height:auto;display:block}
+.hero__info{display:flex;flex-direction:column;gap:12px}
+.hero__name{font-size:16px;font-weight:600;color:var(--ink)}
+.hero__price{font-size:14px;color:var(--muted)}
+.hero h1{font-size:48px;font-weight:700;line-height:1.15;margin:0 0 20px;color:var(--ink)}
+.hero p{font-size:20px;line-height:1.5;margin:0 0 28px;color:var(--muted);max-width:520px}
+
+.section{padding:18px 0}
+.section__head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:12px}
+.section__title{margin:0;font-size:var(--text-xl);letter-spacing:-.01em}
+.section__subtitle{margin:0;color:var(--muted);font-size:var(--text-sm)}
+
+.section__title::after{
+	content:"";
+	display:block;
+	margin-top:8px;
+	width:64px;
+	height:4px;
+	background:var(--brand);
+}
+
+.grid{display:grid;gap:16px}
+.grid--2{grid-template-columns:repeat(2,1fr)}
+.grid--3{grid-template-columns:repeat(3,1fr)}
+.grid--4{grid-template-columns:repeat(4,1fr)}
+.grid--5{grid-template-columns:repeat(5,1fr)}
+
+.card{
+  border:1px solid var(--line);
+  background:var(--bg);
+  display:flex;
+  flex-direction:column;
+}
+.card__media{background:#ffffff;border-bottom:1px solid var(--line);padding:16px;display:flex;align-items:center;justify-content:center;min-height:220px}
+.card__media img{max-width:100%;height:auto;object-fit:contain}
+.card__body{padding:14px;flex:1;display:flex;flex-direction:column}
+.card__title{margin:0 0 8px;font-size:var(--text-md);font-weight:700;color:var(--ink);line-height:1.3}
+.card__desc{margin:0 0 10px;color:var(--muted);font-size:var(--text-sm);line-height:1.4}
+.card__footer{margin-top:auto;padding-top:10px}
+.price{font-weight:900;color:var(--ink);font-size:var(--text-lg);margin-bottom:10px}
+.price small{font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-size:11px;display:block;margin-bottom:2px}
+
+/* Ratings (5-star, industrial) */
+.rating{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.stars{color:var(--accent);font-weight:900;letter-spacing:2px;line-height:1}
+.stars::before{content:"★★★★★"}
+.rating__score{font-weight:900;color:var(--ink);font-size:13px}
+.rating__count{font-weight:800;color:var(--brand);font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+
+/* Reviews section */
+.reviews{border-top:2px solid var(--line);margin-top:28px;padding-top:18px}
+.reviews__head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.reviews__title{margin:0;font-size:22px;font-weight:900}
+.reviews__summary{display:flex;align-items:center;gap:12px;margin-top:10px}
+.reviews__summary-note{color:var(--muted);font-size:13px}
+.review-list{margin-top:16px;display:flex;flex-direction:column;gap:12px}
+.review{
+  border:1px solid var(--line);
+  background:var(--bg);
+  padding:14px;
+}
+.review__meta{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
+.review__name{font-weight:900}
+.review__details{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+.review__text{margin:0;color:var(--ink)}
+
+/* Design Services (between Reviews and Applications) */
+.design-services{border-top:2px solid var(--line);margin-top:22px;padding-top:18px}
+.design-services .grid{margin-top:14px}
+
+/* Applications / Use cases (SEO content block) */
+.apps{border-top:2px solid var(--line);margin-top:22px;padding-top:18px}
+.apps__title{margin:0;font-size:22px;font-weight:900}
+.apps__intro{margin:8px 0 14px;color:var(--muted);font-size:13px;max-width:80ch}
+.app-grid{display:grid;gap:12px;grid-template-columns:repeat(3,1fr)}
+.app-item{border:1px solid var(--line);background:var(--bg);padding:12px;display:flex;gap:10px}
+.app-icon{flex:0 0 34px;height:34px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--brand);background:var(--bg-alt)}
+.app-icon svg{width:18px;height:18px;display:block}
+.app-title{margin:0;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.04em}
+.app-desc{margin:4px 0 0;color:var(--muted);font-size:13px;line-height:1.4}
+
+@media (max-width: 900px){
+  .app-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width: 620px){
+  .app-grid{grid-template-columns:1fr}
+}
+
+/* Pricing tables (Home Depot-style, industrial) */
+.pricing-table{
+  width:100%;
+  border-collapse:collapse;
+  border:2px solid var(--line);
+  background:#fff;
+  margin-top:10px;
+}
+.pricing-table caption{
+  text-align:left;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  font-size:12px;
+  color:var(--muted);
+  margin:0 0 8px;
+}
+.pricing-table th,
+.pricing-table td{
+  padding:10px 12px;
+  border-top:1px solid var(--line);
+  font-size:14px;
+}
+.pricing-table thead th{
+  border-top:0;
+  background:var(--bg-alt);
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  font-size:11px;
+  color:var(--ink);
+}
+.pricing-table td:last-child,
+.pricing-table th:last-child{
+  text-align:right;
+  font-weight:900;
+}
+.pricing-table tbody tr:hover{background:#fff7ed}
+
+.service-icon{font-size:48px;margin-bottom:16px;line-height:1;color:var(--brand)}
+.service-icon svg{display:block;width:48px;height:48px}
+.service-footer{margin-top:auto;padding-top:16px;display:flex;flex-direction:column;gap:10px}
+.service-note{font-size:13px;color:var(--muted);margin:0}
+
+/* Pills removed per user request */
+
+/* Product pages */
+.product-layout{display:grid;grid-template-columns:420px 1fr;gap:24px;align-items:start}
+.product-gallery{display:flex;flex-direction:column;gap:14px}
+.product-image{border:1px solid var(--line);background:#fff;padding:16px;display:flex;align-items:center;justify-content:center;min-height:320px}
+.product-image img{max-width:100%;height:auto;object-fit:contain}
+.product-thumbnails{display:flex;gap:10px;flex-wrap:wrap}
+.product-thumbnails a{display:block;border:1px solid var(--line);background:#fff;padding:6px}
+.product-thumbnails img{width:84px;height:64px;object-fit:contain}
+.product-specs{border:1px solid var(--line);background:var(--bg);padding:12px;display:grid;gap:8px}
+.spec-row{display:flex;justify-content:space-between;gap:12px;font-size:13px;border-bottom:1px solid var(--line);padding-bottom:8px}
+.spec-row:last-child{border-bottom:0;padding-bottom:0}
+.spec-row strong{text-transform:uppercase;letter-spacing:.06em;font-size:11px;color:var(--muted)}
+.spec-row span{font-weight:700;color:var(--ink);text-align:right}
+
+.product-options{display:flex;flex-direction:column;gap:14px}
+.option-section{border:1px solid var(--line);background:#fff}
+.option-title{margin:0;padding:12px 14px;border-bottom:1px solid var(--line);font-size:16px;font-weight:900;color:var(--ink);display:flex;align-items:center;gap:10px}
+.option-number{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border:2px solid var(--line);font-size:13px;font-weight:900}
+.option-body{padding:12px 14px;font-size:14px;color:var(--ink);line-height:1.6}
+.option-body ul{margin:10px 0 0;padding-left:18px}
+
+.field-row{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap;margin-top:10px}
+.field-row label{font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:11px;color:var(--muted)}
+.field{display:flex;flex-direction:column;gap:6px;flex:1;min-width:240px}
+.field-row input,.field-row textarea,.field-row select{border:2px solid var(--line);padding:10px 12px;font-size:14px;outline:none;background:#fff;color:var(--ink)}
+.field-row input,.field-row select{width:100%}
+.field-row textarea{width:min(560px,100%);min-height:96px;resize:vertical}
+
+.product-cta{margin-top:10px}
+.product-cta .btn{width:100%;padding:16px;font-size:16px}
+
+/* Quote modal (dialog) */
+.quote-dialog{
+  width:min(760px, calc(100% - 32px));
+  border:2px solid var(--line);
+  padding:0;
+  background:var(--bg);
+}
+.quote-dialog::backdrop{
+  background:rgba(11, 18, 32, 0.55);
+}
+.quote-dialog__inner{padding:16px}
+.quote-dialog__header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  border-bottom:1px solid var(--line);
+  padding:14px 16px;
+}
+.quote-dialog__title{margin:0;font-size:18px;font-weight:900;letter-spacing:-.01em}
+.quote-dialog__note{margin:0 0 10px;color:var(--muted);font-size:13px}
+.quote-dialog__actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:12px}
+.quote-dialog__status{margin:10px 0 0;color:var(--muted);font-size:13px}
+.quote-status--success{color:var(--whatsapp-ink)}
+.quote-status--error{color:var(--danger)}
+
+.btn[disabled]{opacity:.65;cursor:not-allowed}
+
+/* WhatsApp floating button */
+.whatsapp-fab{
+  position:fixed;
+  right:16px;
+  bottom:16px;
+  width:68px;
+  height:68px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--whatsapp);
+  color:#fff;
+  border:0;
+  border-radius:999px;
+  text-decoration:none;
+  z-index:1000;
+}
+.whatsapp-fab:hover{background:var(--whatsapp-ink)}
+.whatsapp-fab svg{width:44px;height:44px;display:block}
+
+@media (max-width: 1024px){
+  /* Mobile/tablet nav */
+  .nav-toggle{display:inline-flex}
+  .nav{display:none}
+  .nav.is-open{
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    gap:0;
+    position:absolute;
+    top:72px;
+    left:0;
+    right:0;
+    background:var(--bg);
+    border-bottom:2px solid var(--line);
+    padding:8px 12px;
+    z-index:80;
+  }
+  .nav > a,
+  .nav__item > a{
+    padding:12px 10px;
+    justify-content:space-between;
+  }
+  .nav__item{width:100%}
+  .nav__menu{
+    display:none;
+    position:static;
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+    transform:none;
+    transition:none;
+    border:0;
+    margin:0;
+  }
+  .nav__dropdown.is-subopen .nav__menu{display:block}
+  .nav__dropdown.is-subopen .nav__arrow{transform:rotate(180deg)}
+  .nav__menu::before{display:none}
+  .nav__menu a{border:0;padding:10px 18px}
+}
+
+@media (max-width: 980px){
+	.hero__row{flex-direction:column;gap:32px}
+	.hero__product{flex:0 0 auto;width:100%;max-width:320px}
+  .grid--5{grid-template-columns:repeat(3,1fr)}
+  .grid--4{grid-template-columns:repeat(2,1fr)}
+  .grid--3{grid-template-columns:repeat(2,1fr)}
+  .grid--2{grid-template-columns:1fr}
+  .search{display:none}
+  .footer__grid{grid-template-columns:1fr}
+
+  /* Ensure lateral spacing on mobile devices */
+  .container{padding:0 20px}
+  
+  /* Ensure all major sections respect lateral spacing */
+  .hero,
+  .section{padding-left:20px;padding-right:20px}
+  
+  /* Product layout adjustments */
+  .product-layout{grid-template-columns:1fr}
+  .product-image{min-height:240px}
+  .product__content{padding:20px}
+  
+  /* Product page header elements need extra spacing */
+  main > .container > h1,
+  main > .container > p,
+  main > .container > .rating{
+    padding-left:20px;
+    padding-right:20px;
+  }
+}
+
+.gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.gallery img{border:2px solid var(--line);background:#fff}
+
+.scroll-x{
+  display:flex;
+  gap:16px;
+  overflow-x:auto;
+  overflow-y:hidden;
+  scroll-snap-type:x mandatory;
+  padding-bottom:8px;
+  -webkit-overflow-scrolling:touch;
+}
+.scroll-x::-webkit-scrollbar{height:8px}
+.scroll-x::-webkit-scrollbar-track{background:var(--bg-alt)}
+.scroll-x::-webkit-scrollbar-thumb{background:var(--line);border-radius:0}
+.scroll-x > .card{
+  flex:0 0 280px;
+  scroll-snap-align:start;
+}
+
+.callout{
+	border:2px solid var(--line);
+	background:var(--bg-alt);
+	padding:16px;
+}
+.callout__title{margin:0 0 6px;font-size:14px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
+.callout__text{margin:0;color:var(--muted);font-size:14px}
+
+.list{
+	margin:0;
+	padding-left:18px;
+	color:var(--muted);
+	font-size:14px;
+}
+.list li{margin:6px 0}
+
+.table{
+	width:100%;
+	border-collapse:collapse;
+	font-size:14px;
+}
+.table th,.table td{border:2px solid var(--line);padding:10px;vertical-align:top}
+.table th{background:var(--bg-alt);text-align:left;text-transform:uppercase;letter-spacing:.06em;font-size:12px}
+
+.footer{margin-top:22px;background:#1f2d44;color:#e5e7eb}
+.footer__grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:18px;padding:26px 0}
+.footer h3{margin:0 0 10px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#cbd5e1}
+.footer a{color:#e5e7eb;text-decoration:none;font-size:14px}
+.footer a:hover{text-decoration:underline}
+.footer ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.footer__bottom{border-top:1px solid rgba(255,255,255,.12);padding:14px 0;color:#cbd5e1;font-size:13px}
+
+@media (max-width: 640px){
+  .grid--5{grid-template-columns:repeat(2,1fr)}
+  .grid--4{grid-template-columns:repeat(2,1fr)}
+  .kpis{grid-template-columns:1fr}
+  .brand__logo{width:160px}
+
+  /* Ensure adequate lateral spacing on smaller devices */
+  .container{padding:0 16px !important}
+  
+  /* All major sections with consistent spacing */
+  .hero,
+  .section{padding-left:16px;padding-right:16px}
+  
+  /* Product page header elements - ensure they don't touch edges */
+  main > .container > h1,
+  main > .container > p,
+  main > .container > .rating,
+  main > .container > .product-layout{
+    padding-left:0;
+    padding-right:0;
+  }
+
+  /* Product layout specific spacing */
+  .product-layout{
+    padding:0 16px;
+  }
+
+  /* Product options and sections */
+  .product-options,
+  .product-gallery{
+    padding:0;
+  }
+
+  /* Reviews, apps, design services sections */
+  .reviews,
+  .apps,
+  .design-services{
+    padding-left:0;
+    padding-right:0;
+  }
+
+  /* Hero adjustments */
+  .hero{padding:40px 16px}
+  .hero h1{font-size:32px}
+  .hero p{font-size:16px}
+
+  /* Section adjustments */
+  .section{padding:14px 16px}
+
+  /* Card media adjustments */
+  .card__media{padding:12px;min-height:180px}
+
+  /* Scroll horizontal with lateral spacing */
+  .scroll-x{
+    margin:0 -16px;
+    padding:0 16px 8px 16px;
+  }
+
+  /* Modal adjustments */
+  .quote-dialog{width:calc(100% - 32px)}
+
+  /* WhatsApp button adjustment */
+  .whatsapp-fab{
+    right:12px;
+    bottom:12px;
+    width:56px;
+    height:56px;
+  }
+  .whatsapp-fab svg{width:36px;height:36px}
+
+  /* Forms: keep requested rows paired on mobile */
+  .field-row{flex-wrap:nowrap;gap:8px}
+  .field{min-width:0}
+  .field-row textarea{width:100%}
+}
+
+@media (max-width: 420px){
+  .grid--5{grid-template-columns:1fr}
+  .grid--4{grid-template-columns:1fr}
+
+  /* Extra small devices - ensure minimum spacing */
+  .container{padding:0 16px !important}
+  
+  /* All major sections with consistent spacing */
+  .hero,
+  .section{padding-left:16px;padding-right:16px}
+  
+  /* Product page header elements */
+  main > .container > h1,
+  main > .container > p,
+  main > .container > .rating,
+  main > .container > .product-layout{
+    padding-left:0;
+    padding-right:0;
+  }
+
+  /* Product layout specific spacing */
+  .product-layout{
+    padding:0 16px;
+  }
+
+  /* Hero adjustments */
+  .hero{padding:40px 16px}
+  .hero h1{font-size:28px}
+  .hero p{font-size:15px}
+
+  /* Section adjustments */
+  .section{padding:14px 16px}
+
+  /* Adjust typography */
+  .section__title{font-size:18px}
+
+  /* Product layout improvements */
+  .product-image{min-height:200px;padding:12px}
+  .product-thumbnails img{width:70px;height:54px}
+
+  /* Table responsive improvements */
+  .pricing-table{font-size:13px}
+  .pricing-table th,
+  .pricing-table td{padding:8px 10px}
+
+  /* Scroll adjustments for smallest screens */
+  .scroll-x{
+    margin:0 -16px;
+    padding:0 16px 8px 16px;
+  }
+  .scroll-x > .card{flex:0 0 240px}
+}
+
