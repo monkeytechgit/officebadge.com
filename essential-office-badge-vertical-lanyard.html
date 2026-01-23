@@ -85,13 +85,49 @@
         "@id":"https://www.officebadge.com/#organization"
       },
       "sku":"essential-office-badge-vertical-lanyard",
+      "aggregateRating":{
+        "@type":"AggregateRating",
+        "ratingValue":"5",
+        "reviewCount":"1306"
+      },
       "offers":{
         "@type":"Offer",
         "url":"https://www.officebadge.com/essential-office-badge-vertical-lanyard",
         "priceCurrency":"USD",
         "price":"6.99",
         "availability":"https://schema.org/InStock",
-        "priceValidUntil":"2026-01-01"
+        "priceValidUntil":"2026-01-01",
+        "shippingDetails":{
+          "@type":"OfferShippingDetails",
+          "shippingDestination":[
+            {"@type":"DefinedRegion","addressCountry":"US"}
+          ],
+          "shippingRate":{
+            "@type":"MonetaryAmount",
+            "value":"0",
+            "currency":"USD"
+          },
+          "deliveryTime":{
+            "@type":"ShippingDeliveryTime",
+            "handlingTime":{
+              "@type":"QuantitativeValue",
+              "minValue":1,
+              "maxValue":3,
+              "unitCode":"d"
+            },
+            "transitTime":{
+              "@type":"QuantitativeValue",
+              "minValue":2,
+              "maxValue":4,
+              "unitCode":"d"
+            }
+          }
+        },
+        "hasMerchantReturnPolicy":{
+          "@type":"MerchantReturnPolicy",
+          "returnPolicyCategory":"https://schema.org/MerchantReturnNotPermitted",
+          "applicableCountry":"US"
+        }
       }
     }
   ]
