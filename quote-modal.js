@@ -6,6 +6,54 @@
   const SUPABASE_URL = "https://syybzslumpqqhrgmmeux.supabase.co";
   const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5eWJ6c2x1bXBxcWhyZ21tZXV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg4NDYxNjksImV4cCI6MjA4NDQyMjE2OX0.3tOICNWzxyJjS8I1sT-zeJnnnipP3AGRknbt8tEqE40";
 
+  // EmailJS configuration
+  const EMAILJS_PUBLIC_KEY = "5vTFdcXJ0G3y7ZaPs";
+  const EMAILJS_SERVICE_ID = "service_z1d7utk";
+  const EMAILJS_TEMPLATE_ID = "template_y4y0gl8";
+
+  let emailJsInitPromise = null;
+
+  function ensureEmailJsLoadedAndInit() {
+    if (emailJsInitPromise) return emailJsInitPromise;
+
+    emailJsInitPromise = new Promise((resolve, reject) => {
+      const init = () => {
+        try {
+          if (!window.emailjs || typeof window.emailjs.send !== "function") {
+            throw new Error("EmailJS SDK not available");
+          }
+          window.emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+          resolve();
+        } catch (e) {
+          reject(e);
+        }
+      };
+
+      if (window.emailjs && typeof window.emailjs.send === "function") {
+        init();
+        return;
+      }
+
+      const existing = document.querySelector('script[data-emailjs-sdk="true"]');
+      if (existing) {
+        existing.addEventListener("load", init, { once: true });
+        existing.addEventListener("error", () => reject(new Error("Could not load EmailJS")), { once: true });
+        return;
+      }
+
+      const script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = "https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js";
+      script.async = true;
+      script.setAttribute("data-emailjs-sdk", "true");
+      script.onload = init;
+      script.onerror = () => reject(new Error("Could not load EmailJS"));
+      document.head.appendChild(script);
+    });
+
+    return emailJsInitPromise;
+  }
+
   function $(selector, root = document) {
     return root.querySelector(selector);
   }
@@ -196,7 +244,8 @@
     const company = normalizeOptional(form.elements.company?.value);
     const productType = (form.elements.productType?.value ?? "").trim();
     const estimatedQty = (form.elements.estimatedQty?.value ?? "").trim();
-    const desiredDeliveryDate = toTimestampOrNull(form.elements.desiredDeliveryDate?.value);
+    const desiredDeliveryDateRaw = (form.elements.desiredDeliveryDate?.value ?? "").toString().trim();
+    const desiredDeliveryDate = toTimestampOrNull(desiredDeliveryDateRaw);
     const projectDescription = normalizeOptional(form.elements.projectDescription?.value);
 
     const payload = {
@@ -217,6 +266,33 @@
     if (submitBtn) submitBtn.disabled = true;
 
     try {
+      // 1) Send EmailJS notification first
+      try {
+        await ensureEmailJsLoadedAndInit();
+
+        const producto = productType;
+        const templateParams = {
+          nombre: fullName,
+          empresa: company ?? "",
+          correo: email,
+          telefono: phone ?? "",
+          producto,
+          cantidad: estimatedQty,
+          entrega: desiredDeliveryDateRaw || "",
+          descripcion: projectDescription ?? "",
+          title: `Office Badge | Cotización: ${producto || ""}`.trim(),
+          name: fullName,
+        };
+
+        const emailResp = await window.emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+        // eslint-disable-next-line no-console
+        console.log("✅ EmailJS sent:", emailResp);
+      } catch (emailErr) {
+        // eslint-disable-next-line no-console
+        console.warn("EmailJS send failed:", emailErr);
+      }
+
+      // 2) Send to Supabase as backup
       const res = await fetch(`${SUPABASE_URL}/rest/v1/contact_webpage`, {
         method: "POST",
         headers: {
@@ -236,7 +312,7 @@
       if (statusEl) {
         statusEl.classList.remove("quote-status--error");
         statusEl.classList.add("quote-status--success");
-        statusEl.textContent = "Thanks — we received your request. We’ll follow up shortly.";
+        statusEl.textContent = "Thanks — we received your request. We'll follow up shortly.";
       }
       form.reset();
 
@@ -317,14 +393,9 @@
     }
 
     // Close on backdrop click.
+    // Coordinate-based checks can misfire for native <select> dropdowns (notably Safari/macOS).
     dialog.addEventListener("click", (e) => {
-      const rect = dialog.getBoundingClientRect();
-      const inDialog =
-        rect.top <= e.clientY &&
-        e.clientY <= rect.top + rect.height &&
-        rect.left <= e.clientX &&
-        e.clientX <= rect.left + rect.width;
-      if (!inDialog) dialog.close();
+      if (e.target === dialog) dialog.close();
     });
   }
 
